@@ -37,6 +37,10 @@ const LogIn: React.FC = () => {
     const success = await userCtx.logIn(email, pw);
     if (!success) {
       setLoggingIn(false);
+      showMessage({
+        message: 'Log in failed.',
+        type: 'danger',
+      });
     }
   };
 

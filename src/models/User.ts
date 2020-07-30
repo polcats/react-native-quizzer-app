@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import { AsyncStorage } from 'react-native';
+import api from '../services';
 
 import {
   model,
@@ -14,7 +15,6 @@ import {
 import { observable } from 'mobx';
 
 type UserData = {
-  id: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -27,7 +27,6 @@ class User extends Model({
 }) {
   token = '';
   user: UserData = {
-    id: '',
     email: '',
     firstName: '',
     lastName: '',
@@ -61,9 +60,11 @@ class User extends Model({
       if (items) {
         // check first if tok is not expired
         this.loggedIn = true;
-        this.token = data as string;
+        this.user = JSON.parse(items) as UserData;
+        console.log(this.user);
       }
     } catch (error) {
+      console.log(error);
     } finally {
       this.loading = false;
     }
@@ -72,7 +73,7 @@ class User extends Model({
   @modelFlow
   storeData = _async(function* (this: User) {
     try {
-      const data = JSON.stringify(this.token);
+      const data = JSON.stringify(this.user);
       _await(AsyncStorage.setItem(this.storageKey, data));
     } catch (e) {}
   });
@@ -92,20 +93,25 @@ class User extends Model({
 
   @modelFlow
   logIn = _async(function* (this: User, email: string, pw: string) {
-    // authenticate user ...
-    // on success:
-    this.token = 'new-dummy-token';
-    this.loggedIn = true;
-    this.storeData();
-    return true;
+    const req = { email: email, password: pw };
+    console.log('logging..');
+    try {
+      const res: any = yield* _await(
+        api.post('auth/login', { json: req }).json(),
+      );
 
-    // on fail:
-    this.failure.showErr = true;
-    this.failure.badEmail = true; // if email is not found..
-    this.failure.badPw = true; // if pw is wrong
-    // or
-    //this.setFailure(true, true, true)
-    // return false
+      this.user.firstName = res.data.firstName;
+      this.user.lastName = res.data.lastName;
+      this.user.email = res.data.email;
+      this.user.token = res.data.token;
+      this.loggedIn = true;
+      this.storeData();
+      console.log(res);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   });
 
   @modelFlow
@@ -116,14 +122,29 @@ class User extends Model({
     email: string,
     pw: string,
   ) {
-    // check if acc creation is succ
-    // this.token = 'new-dummy-token';
-    // this.loggedIn = true;
-    // this.storeData();
-    // return true;
+    const req = {
+      firstName: fn,
+      lastName: ln,
+      email: email,
+      password: pw,
+    };
 
-    // else
-    return false;
+    try {
+      const res: any = yield* _await(
+        api.post('auth/register', { json: req }).json(),
+      );
+
+      this.user.firstName = res.data.firstName;
+      this.user.lastName = res.data.lastName;
+      this.user.email = res.data.email;
+      this.user.token = res.data.token;
+      this.loggedIn = true;
+      this.storeData();
+
+      return true;
+    } catch (error) {
+      return false;
+    }
   });
 
   @modelFlow

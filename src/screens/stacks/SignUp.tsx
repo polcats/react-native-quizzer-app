@@ -5,16 +5,17 @@ import { showMessage } from 'react-native-flash-message';
 import { TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native';
 import { Layout, Input, Text, Button } from '@ui-kitten/components';
 import { userContext } from '../../models';
+import api from '../../services';
 
 const SignUp: React.FC = () => {
   const userCtx = useContext(userContext);
   const nav = useNavigation();
   const closeKb = () => Keyboard.dismiss();
 
-  const [fn, setFN] = useState('');
-  const [ln, setLN] = useState('');
-  const [email, setEmail] = useState('');
-  const [pw, setPW] = useState('');
+  const [fn, setFN] = useState('z');
+  const [ln, setLN] = useState('z');
+  const [email, setEmail] = useState('z@z.com');
+  const [pw, setPW] = useState('z');
   const [createDisabled, setCreateDisabled] = useState(false);
 
   const [errEmail, setEmailErr] = useState('basic');
@@ -72,6 +73,14 @@ const SignUp: React.FC = () => {
     }
     setPWErr('basic');
     setCreateDisabled(true);
+
+    const req = {
+      firstName: fn,
+      lastName: ln,
+      email: email,
+      password: pw,
+    };
+
     let res = await userCtx.signUp(fn, ln, email, pw);
     if (!res) {
       setCreateDisabled(false);
