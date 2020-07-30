@@ -90,11 +90,12 @@ const SignUp: React.FC = () => {
 
   return (
     <TouchableWithoutFeedback onPress={closeKb}>
-      <Layout>
+      <Layout style={styles.container}>
         <Text style={styles.text} category="h4">
           First Name
         </Text>
         <Input
+          style={styles.input}
           ref={fnRef}
           status={errFN}
           defaultValue={fn}
@@ -104,6 +105,7 @@ const SignUp: React.FC = () => {
           Last Name
         </Text>
         <Input
+          style={styles.input}
           ref={lnRef}
           status={errLN}
           defaultValue={ln}
@@ -114,6 +116,7 @@ const SignUp: React.FC = () => {
           Email
         </Text>
         <Input
+          style={styles.input}
           ref={emailRef}
           status={errEmail}
           keyboardType="email-address"
@@ -124,6 +127,7 @@ const SignUp: React.FC = () => {
           Password
         </Text>
         <Input
+          style={styles.input}
           ref={pwRef}
           status={errPW}
           secureTextEntry={true}
@@ -144,6 +148,14 @@ const SignUp: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  input: {
+    margin: 2,
+  },
   text: {
     margin: 2,
   },

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { observer } from 'mobx-react-lite';
+import { observer, Observer } from 'mobx-react-lite';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -14,27 +14,31 @@ import {
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { Platform } from 'react-native';
-import { userContext } from '../models';
+import { userContext, settingsContext } from '../models';
 import { LogIn, SignUp } from './stacks/';
 import FlashMessage from 'react-native-flash-message';
 import styled from 'styled-components/native';
 import Splash from './Splash';
 import { ApplicationProvider, Input } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-import { Dashboard } from './drawers';
+import { Dashboard, Settings } from './drawers';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 const Screen: React.FC = () => {
   const userCtx = useContext(userContext);
+  const settingsCtx = useContext(settingsContext);
 
-  if (userCtx.loading) {
+  if (userCtx.loading && settingsCtx.loading) {
     return <Splash />;
   }
 
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <ApplicationProvider
+      {...eva}
+      theme={userCtx.loggedIn ? settingsCtx.theme : eva.light}
+    >
       <SafeAreaView style={styles.container}>
         <KeyboardAvoidingView
           style={styles.container}
@@ -46,7 +50,8 @@ const Screen: React.FC = () => {
                 <Drawer.Navigator
                   drawerContent={(props) => <DrawerContent {...props} />}
                 >
-                  <Drawer.Screen name="Tracker" component={Dashboard} />
+                  <Drawer.Screen name="Dashboard" component={Dashboard} />
+                  <Drawer.Screen name="Settings" component={Settings} />
                 </Drawer.Navigator>
                 <FlashMessage position="bottom" />
               </>
@@ -92,8 +97,12 @@ const DrawerContent = ({ navigation }: { navigation: any }) => {
   return (
     <DrawerContentScrollView>
       <DrawerItem
-        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Tracker'))}
-        label="Tracker"
+        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Dashboard'))}
+        label="Dashboard"
+      />
+      <DrawerItem
+        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Settings'))}
+        label="Settings"
       />
       <DrawerItem onPress={confirmLogout} label="Log Out" />
     </DrawerContentScrollView>

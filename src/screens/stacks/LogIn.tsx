@@ -48,11 +48,12 @@ const LogIn: React.FC = () => {
 
   return (
     <TouchableWithoutFeedback onPress={closeKb}>
-      <Layout>
+      <Layout style={styles.container}>
         <Text style={styles.text} category="h4">
           Email
         </Text>
         <Input
+          style={styles.input}
           ref={emailRef}
           keyboardType="email-address"
           defaultValue={email}
@@ -62,6 +63,7 @@ const LogIn: React.FC = () => {
           Password
         </Text>
         <Input
+          style={styles.input}
           ref={pwRef}
           secureTextEntry={true}
           defaultValue={pw}
@@ -84,10 +86,17 @@ const LogIn: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  input: {
+    margin: 2,
+  },
   text: {
     margin: 2,
   },
-
   button: {
     margin: 2,
   },
