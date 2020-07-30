@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Layout, Text, TopNavigation } from '@ui-kitten/components';
-import { userContext } from '../../models';
+import { userContext, settingsContext } from '../../models';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { Entypo } from '@expo/vector-icons';
 
 const Dashboard: React.FC = () => {
   const userCtx = useContext(userContext);
+  const settingsCtx = useContext(settingsContext);
   const nav = useNavigation();
   const openDrawer = () => nav.dispatch(DrawerActions.openDrawer());
 
@@ -15,7 +16,12 @@ const Dashboard: React.FC = () => {
       <TopNavigation
         alignment="center"
         accessoryLeft={() => (
-          <Entypo name="menu" size={24} onPress={openDrawer} color="skyblue" />
+          <Entypo
+            name="menu"
+            size={24}
+            onPress={openDrawer}
+            color={settingsCtx.isDark ? '#fff' : '#000'}
+          />
         )}
         title={() => <Text category="h4">Dashboard</Text>}
       />

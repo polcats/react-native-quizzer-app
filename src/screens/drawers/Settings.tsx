@@ -19,7 +19,12 @@ const Settings: React.FC = () => {
       <TopNavigation
         alignment="center"
         accessoryLeft={() => (
-          <Entypo name="menu" size={24} onPress={openDrawer} color="skyblue" />
+          <Entypo
+            name="menu"
+            size={24}
+            onPress={openDrawer}
+            color={settingsCtx.isDark ? '#fff' : '#000'}
+          />
         )}
         title={() => <Text category="h4">Settings</Text>}
       />

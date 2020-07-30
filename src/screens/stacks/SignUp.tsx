@@ -112,7 +112,7 @@ const SignUp: React.FC = () => {
           title={() => <Text category="h4">Sign Up</Text>}
         />
         <Layout style={styles.form}>
-          <Text style={styles.text} category="h4">
+          <Text style={styles.text} category="h5">
             First Name
           </Text>
           <Input
@@ -122,7 +122,7 @@ const SignUp: React.FC = () => {
             defaultValue={fn}
             onChangeText={(nextValue) => setFN(nextValue)}
           />
-          <Text style={styles.text} category="h4">
+          <Text style={styles.text} category="h5">
             Last Name
           </Text>
           <Input
@@ -133,7 +133,7 @@ const SignUp: React.FC = () => {
             onChangeText={(nextValue) => setLN(nextValue)}
           />
 
-          <Text style={styles.text} category="h4">
+          <Text style={styles.text} category="h5">
             Email
           </Text>
           <Input
@@ -144,7 +144,7 @@ const SignUp: React.FC = () => {
             defaultValue={email}
             onChangeText={(nextValue) => setEmail(nextValue)}
           />
-          <Text style={styles.text} category="h4">
+          <Text style={styles.text} category="h5">
             Password
           </Text>
           <Input

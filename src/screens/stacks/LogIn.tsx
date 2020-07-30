@@ -70,7 +70,7 @@ const LogIn: React.FC = () => {
   return (
     <TouchableWithoutFeedback onPress={closeKb}>
       <Layout style={styles.container}>
-        <Text style={styles.text} category="h4">
+        <Text style={styles.text} category="h5">
           Email
         </Text>
         <Input
@@ -81,7 +81,7 @@ const LogIn: React.FC = () => {
           defaultValue={email}
           onChangeText={(nextValue) => setEmail(nextValue)}
         />
-        <Text style={styles.text} category="h4">
+        <Text style={styles.text} category="h5">
           Password
         </Text>
         <Input
