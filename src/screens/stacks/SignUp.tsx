@@ -2,8 +2,15 @@ import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import { TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native';
-import { Layout, Input, Text, Button } from '@ui-kitten/components';
+import {
+  Layout,
+  Input,
+  Text,
+  Button,
+  TopNavigation,
+} from '@ui-kitten/components';
 import { userContext } from '../../models';
+import { Ionicons } from '@expo/vector-icons';
 
 const SignUp: React.FC = () => {
   const userCtx = useContext(userContext);
@@ -89,66 +96,74 @@ const SignUp: React.FC = () => {
     }
   };
 
-  React.useLayoutEffect(() => {
-    nav.setOptions({
-      headerTitleAlign: 'center',
-    });
-  }, [nav]);
-
   return (
     <TouchableWithoutFeedback onPress={closeKb}>
       <Layout style={styles.container}>
-        <Text style={styles.text} category="h4">
-          First Name
-        </Text>
-        <Input
-          style={styles.input}
-          ref={fnRef}
-          status={errFN}
-          defaultValue={fn}
-          onChangeText={(nextValue) => setFN(nextValue)}
+        <TopNavigation
+          alignment="center"
+          accessoryLeft={() => (
+            <Ionicons
+              name="ios-arrow-back"
+              size={24}
+              color="black"
+              onPress={() => nav.goBack()}
+            />
+          )}
+          title={() => <Text category="h4">Sign Up</Text>}
         />
-        <Text style={styles.text} category="h4">
-          Last Name
-        </Text>
-        <Input
-          style={styles.input}
-          ref={lnRef}
-          status={errLN}
-          defaultValue={ln}
-          onChangeText={(nextValue) => setLN(nextValue)}
-        />
+        <Layout style={styles.form}>
+          <Text style={styles.text} category="h4">
+            First Name
+          </Text>
+          <Input
+            style={styles.input}
+            ref={fnRef}
+            status={errFN}
+            defaultValue={fn}
+            onChangeText={(nextValue) => setFN(nextValue)}
+          />
+          <Text style={styles.text} category="h4">
+            Last Name
+          </Text>
+          <Input
+            style={styles.input}
+            ref={lnRef}
+            status={errLN}
+            defaultValue={ln}
+            onChangeText={(nextValue) => setLN(nextValue)}
+          />
 
-        <Text style={styles.text} category="h4">
-          Email
-        </Text>
-        <Input
-          style={styles.input}
-          ref={emailRef}
-          status={errEmail}
-          keyboardType="email-address"
-          defaultValue={email}
-          onChangeText={(nextValue) => setEmail(nextValue)}
-        />
-        <Text style={styles.text} category="h4">
-          Password
-        </Text>
-        <Input
-          style={styles.input}
-          ref={pwRef}
-          status={errPW}
-          secureTextEntry={true}
-          defaultValue={pw}
-          onChangeText={(nextValue) => setPW(nextValue)}
-        />
+          <Text style={styles.text} category="h4">
+            Email
+          </Text>
+          <Input
+            style={styles.input}
+            ref={emailRef}
+            status={errEmail}
+            keyboardType="email-address"
+            defaultValue={email}
+            onChangeText={(nextValue) => setEmail(nextValue)}
+          />
+          <Text style={styles.text} category="h4">
+            Password
+          </Text>
+          <Input
+            style={styles.input}
+            ref={pwRef}
+            status={errPW}
+            secureTextEntry={true}
+            defaultValue={pw}
+            onChangeText={(nextValue) => setPW(nextValue)}
+          />
 
-        <Button
-          style={styles.button}
-          onPress={createAcc}
-          disabled={createDisabled}
-        >
-          Register
-        </Button>
+          <Button
+            style={styles.button}
+            onPress={createAcc}
+            disabled={createDisabled}
+          >
+            Register
+          </Button>
+        </Layout>
       </Layout>
     </TouchableWithoutFeedback>
   );
@@ -156,6 +171,11 @@ const SignUp: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    padding: 20,
+  },
+  form: {
     flex: 1,
     justifyContent: 'center',
     padding: 20,

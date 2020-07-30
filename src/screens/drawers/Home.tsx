@@ -8,7 +8,11 @@ const Stack = createStackNavigator();
 const Home: React.FC = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Dashboard} />
+      <Stack.Screen
+        name="Home"
+        options={{ headerShown: false }}
+        component={Dashboard}
+      />
     </Stack.Navigator>
   );
 };

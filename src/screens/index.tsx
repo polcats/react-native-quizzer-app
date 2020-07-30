@@ -57,8 +57,16 @@ const Screen: React.FC = () => {
             ) : (
               <>
                 <Stack.Navigator>
-                  <Stack.Screen name="Log In" component={LogIn} />
-                  <Stack.Screen name="Sign Up" component={SignUp} />
+                  <Stack.Screen
+                    name="Log In"
+                    options={{ headerShown: false }}
+                    component={LogIn}
+                  />
+                  <Stack.Screen
+                    name="Sign Up"
+                    options={{ headerShown: false }}
+                    component={SignUp}
+                  />
                 </Stack.Navigator>
                 <FlashMessage position="top" />
               </>
