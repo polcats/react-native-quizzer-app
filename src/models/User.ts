@@ -115,6 +115,20 @@ class User extends Model({
   });
 
   @modelFlow
+  logOut = _async(function* (this: User) {
+    try {
+      const apiWithHeader = api.extend({
+        headers: {
+          Authorization: `Bearer ${this.user.token}`,
+        },
+      });
+      const res: any = yield* _await(apiWithHeader.post('auth/logout'));
+      _await(AsyncStorage.removeItem(this.storageKey));
+      this.loggedIn = false;
+    } catch (error) {}
+  });
+
+  @modelFlow
   signUp = _async(function* (
     this: User,
     fn: string,
@@ -145,15 +159,6 @@ class User extends Model({
     } catch (error) {
       return false;
     }
-  });
-
-  @modelFlow
-  logOut = _async(function* (this: User) {
-    // send req to server...
-    // once OK:
-    this.token = '';
-    this.loggedIn = false;
-    this.removeData();
   });
 }
 
