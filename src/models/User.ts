@@ -21,7 +21,7 @@ type UserData = {
   token: string;
 };
 
-@model('expenseTracker/User')
+@model('app/User')
 class User extends Model({
   loggedIn: prop<boolean>(false),
 }) {
