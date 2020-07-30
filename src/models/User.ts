@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 import { AsyncStorage } from 'react-native';
 import api from '../services';
+import { decode } from 'base-64';
 
 import {
   model,
@@ -56,15 +57,34 @@ class User extends Model({
   loadData = _async(function* (this: User) {
     try {
       const data = yield* _await(AsyncStorage.getItem(this.storageKey));
-      const items = data ?? undefined;
-      if (items) {
-        // check first if tok is not expired
-        this.loggedIn = true;
-        this.user = JSON.parse(items) as UserData;
-        console.log(this.user);
+      const validData = data ?? undefined;
+      if (validData) {
+        const userData = JSON.parse(validData);
+
+        // Check if token is expired
+        const payload = JSON.parse(decode(userData.token.split('.')[1]));
+        const expiry = new Date(payload.exp * 1000).getTime();
+        const currentTime = new Date().getTime();
+        if (currentTime >= expiry) {
+          _await(AsyncStorage.removeItem(this.storageKey));
+          return;
+        }
+
+        // Reauth
+        const apiWithHeader = api.extend({
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        });
+        const res: any = yield* _await(apiWithHeader.post('auth/reauth'));
+
+        if (res.ok) {
+          this.loggedIn = true;
+          this.user = userData as UserData;
+        }
       }
     } catch (error) {
-      console.log(error);
+      _await(AsyncStorage.removeItem(this.storageKey));
     } finally {
       this.loading = false;
     }
@@ -85,12 +105,6 @@ class User extends Model({
     } catch (e) {}
   });
 
-  @modelAction
-  updateToken = (tok: string) => {
-    this.token = tok;
-    this.storeData();
-  };
-
   @modelFlow
   logIn = _async(function* (this: User, email: string, pw: string) {
     const req = { email: email, password: pw };
@@ -106,10 +120,8 @@ class User extends Model({
       this.user.token = res.data.token;
       this.loggedIn = true;
       this.storeData();
-      console.log(res);
       return true;
     } catch (error) {
-      console.log(error);
       return false;
     }
   });
