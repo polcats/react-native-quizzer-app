@@ -9,30 +9,53 @@ import { Layout, Input, Text, Button } from '@ui-kitten/components';
 const LogIn: React.FC = () => {
   const nav = useNavigation();
   const userCtx = useContext(userContext);
+
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
+  const [errEmail, setEmailErr] = useState('basic');
+  const [errPW, setPWErr] = useState('basic');
+
   const emailRef = React.createRef<any>();
   const pwRef = createRef<any>();
 
   const closeKb = () => Keyboard.dismiss();
   const submitLogin = async () => {
+    let err = false;
+
     if (!email) {
       emailRef.current?.focus();
+      setEmailErr('danger');
       showMessage({
         message: 'Please enter a valid email address..',
         type: 'danger',
       });
-      return;
+
+      err = true;
+    } else {
+      setEmailErr('basic');
     }
+
     if (!pw) {
-      pwRef.current?.focus();
-      showMessage({
-        message: 'Please enter a password',
-        type: 'danger',
-      });
+      setPWErr('danger');
+
+      if (!err) {
+        pwRef.current?.focus();
+        showMessage({
+          message: 'Please enter a password',
+          type: 'danger',
+        });
+      }
+
+      err = true;
+    } else {
+      setPWErr('basic');
+    }
+
+    if (err) {
       return;
     }
+
     setLoggingIn(true);
     const success = await userCtx.logIn(email, pw);
     if (!success) {
@@ -57,6 +80,7 @@ const LogIn: React.FC = () => {
           Email
         </Text>
         <Input
+          status={errEmail}
           style={styles.input}
           ref={emailRef}
           keyboardType="email-address"
@@ -67,6 +91,7 @@ const LogIn: React.FC = () => {
           Password
         </Text>
         <Input
+          status={errPW}
           style={styles.input}
           ref={pwRef}
           secureTextEntry={true}
