@@ -1,11 +1,86 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
+import { TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native';
+import { Layout, Input, Text, Button } from '@ui-kitten/components';
+import { userContext } from '../../models';
 
 const SignUp: React.FC = () => {
+  const userCtx = useContext(userContext);
   const nav = useNavigation();
   const closeKb = () => Keyboard.dismiss();
+
+  const [fn, setFN] = useState('');
+  const [ln, setLN] = useState('');
+  const [email, setEmail] = useState('');
+  const [pw, setPW] = useState('');
+  const [createDisabled, setCreateDisabled] = useState(false);
+
+  const [errEmail, setEmailErr] = useState('basic');
+  const [errPW, setPWErr] = useState('basic');
+  const [errFN, setFNErr] = useState('basic');
+  const [errLN, setLNErr] = useState('basic');
+
+  const fnRef = React.createRef<any>();
+  const lnRef = React.createRef<any>();
+  const emailRef = React.createRef<any>();
+  const pwRef = React.createRef<any>();
+
+  const createAcc = async () => {
+    if (!fn) {
+      fnRef.current?.focus();
+      setFNErr('danger');
+      showMessage({
+        message: 'Please enter your first name.',
+        type: 'danger',
+      });
+      return;
+    }
+    setFNErr('basic');
+
+    if (!ln) {
+      lnRef.current?.focus();
+      setLNErr('danger');
+      showMessage({
+        message: 'Please enter your last name.',
+        type: 'danger',
+      });
+      return;
+    }
+    setLNErr('basic');
+
+    if (!email) {
+      emailRef.current?.focus();
+      setEmailErr('danger');
+      showMessage({
+        message: 'Please enter your email.',
+        type: 'danger',
+      });
+      return;
+    }
+    setEmailErr('basic');
+
+    if (!pw) {
+      pwRef.current?.focus();
+      setPWErr('danger');
+      showMessage({
+        message: 'Please enter your password.',
+        type: 'danger',
+      });
+      return;
+    }
+    setPWErr('basic');
+    setCreateDisabled(true);
+    let res = await userCtx.signUp(fn, ln, email, pw);
+    if (!res) {
+      setCreateDisabled(false);
+      showMessage({
+        message: 'Registration failed.',
+        type: 'danger',
+      });
+    }
+  };
 
   React.useLayoutEffect(() => {
     nav.setOptions({
@@ -15,77 +90,66 @@ const SignUp: React.FC = () => {
 
   return (
     <TouchableWithoutFeedback onPress={closeKb}>
-      <Form>
-        <Header>User Details</Header>
-        <InputFName placeholder="First Name" />
-        <InputLName placeholder="Last Name" />
-        <InputEmail placeholder="Email" />
-        <InputPw placeholder="Password" secureTextEntry={true} />
-        <SignUpButton>
-          <ButtonText>Sign Up</ButtonText>
-        </SignUpButton>
-      </Form>
+      <Layout>
+        <Text style={styles.text} category="h4">
+          First Name
+        </Text>
+        <Input
+          ref={fnRef}
+          status={errFN}
+          defaultValue={fn}
+          onChangeText={(nextValue) => setFN(nextValue)}
+        />
+        <Text style={styles.text} category="h4">
+          Last Name
+        </Text>
+        <Input
+          ref={lnRef}
+          status={errLN}
+          defaultValue={ln}
+          onChangeText={(nextValue) => setLN(nextValue)}
+        />
+
+        <Text style={styles.text} category="h4">
+          Email
+        </Text>
+        <Input
+          ref={emailRef}
+          status={errEmail}
+          keyboardType="email-address"
+          defaultValue={email}
+          onChangeText={(nextValue) => setEmail(nextValue)}
+        />
+        <Text style={styles.text} category="h4">
+          Password
+        </Text>
+        <Input
+          ref={pwRef}
+          status={errPW}
+          secureTextEntry={true}
+          defaultValue={pw}
+          onChangeText={(nextValue) => setPW(nextValue)}
+        />
+
+        <Button
+          style={styles.button}
+          onPress={createAcc}
+          disabled={createDisabled}
+        >
+          Register
+        </Button>
+      </Layout>
     </TouchableWithoutFeedback>
   );
 };
 
-const Form = styled.View`
-  flex: 1;
-  background: skyblue;
-  justify-content: center;
-  padding: 20px;
-`;
-
-const Header = styled.Text`
-  font-size: 45px;
-  font-weight: bold;
-  color: #fff;
-  align-self: center;
-  margin-bottom: 50px;
-`;
-
-const Input = styled.TextInput`
-  background: #fff;
-  color: #000;
-  font-size: 15px;
-  padding: 10px;
-`;
-
-const InputTopBorder = styled(Input)`
-  border-top-color: #eee;
-  border-top-width: 1px;
-`;
-
-const InputFName = styled(Input)`
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-`;
-
-const InputLName = styled(InputTopBorder)``;
-const InputEmail = styled(InputTopBorder)``;
-
-const InputPw = styled(InputTopBorder)`
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-`;
-
-const Button = styled.TouchableOpacity`
-  background: #fff;
-  width: 100%;
-  align-self: center;
-  margin-top: 20px;
-  border-radius: 10px;
-`;
-
-const SignUpButton = styled(Button)`
-  margin-top: 50px;
-`;
-
-const ButtonText = styled.Text`
-  color: skyblue;
-  font-size: 20px;
-  text-align: center;
-  padding: 10px;
-`;
+const styles = StyleSheet.create({
+  text: {
+    margin: 2,
+  },
+  button: {
+    margin: 2,
+  },
+});
 
 export default SignUp;

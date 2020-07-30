@@ -109,6 +109,24 @@ class User extends Model({
   });
 
   @modelFlow
+  signUp = _async(function* (
+    this: User,
+    fn: string,
+    ln: string,
+    email: string,
+    pw: string,
+  ) {
+    // check if acc creation is succ
+    // this.token = 'new-dummy-token';
+    // this.loggedIn = true;
+    // this.storeData();
+    // return true;
+
+    // else
+    return false;
+  });
+
+  @modelFlow
   logOut = _async(function* (this: User) {
     // send req to server...
     // once OK:
