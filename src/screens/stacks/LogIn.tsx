@@ -70,6 +70,7 @@ const LogIn: React.FC = () => {
   React.useLayoutEffect(() => {
     nav.setOptions({
       headerTitleAlign: 'center',
+      headerShown: false,
     });
   }, [nav]);
 
