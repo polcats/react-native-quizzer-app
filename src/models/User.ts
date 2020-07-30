@@ -2,7 +2,6 @@ import { createContext } from 'react';
 import { AsyncStorage } from 'react-native';
 import api from '../services';
 import { decode } from 'base-64';
-
 import {
   model,
   Model,

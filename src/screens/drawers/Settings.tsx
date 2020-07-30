@@ -1,10 +1,8 @@
-import React, { useState, useContext, createRef } from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import { TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import { settingsContext } from '../../models';
-import { Layout, Input, Text, Button, Toggle } from '@ui-kitten/components';
+import { Layout, Toggle } from '@ui-kitten/components';
 
 const Settings: React.FC = () => {
   const settingsCtx = useContext(settingsContext);

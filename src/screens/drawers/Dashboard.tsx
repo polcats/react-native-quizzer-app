@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components/native';
-import { TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native';
-import { Layout, Input, Text, Button, Toggle } from '@ui-kitten/components';
+import { StyleSheet } from 'react-native';
+import { Layout, Input, Text } from '@ui-kitten/components';
 import { userContext } from '../../models';
 
 const Splash: React.FC = () => {

@@ -1,11 +1,9 @@
 import React, { useState, useContext } from 'react';
-import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import { TouchableWithoutFeedback, Keyboard, StyleSheet } from 'react-native';
 import { Layout, Input, Text, Button } from '@ui-kitten/components';
 import { userContext } from '../../models';
-import api from '../../services';
 
 const SignUp: React.FC = () => {
   const userCtx = useContext(userContext);

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { observer, Observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -16,12 +16,11 @@ import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { Platform } from 'react-native';
 import { userContext, settingsContext } from '../models';
 import { LogIn, SignUp } from './stacks/';
-import FlashMessage from 'react-native-flash-message';
-import styled from 'styled-components/native';
-import Splash from './Splash';
-import { ApplicationProvider, Input } from '@ui-kitten/components';
-import * as eva from '@eva-design/eva';
+import { ApplicationProvider } from '@ui-kitten/components';
 import { Dashboard, Settings } from './drawers';
+import FlashMessage from 'react-native-flash-message';
+import Splash from './Splash';
+import * as eva from '@eva-design/eva';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
