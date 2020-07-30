@@ -17,7 +17,7 @@ import { Platform } from 'react-native';
 import { userContext, settingsContext } from '../models';
 import { LogIn, SignUp } from './stacks/';
 import { ApplicationProvider } from '@ui-kitten/components';
-import { Dashboard, Settings } from './drawers';
+import { Home, Settings } from './drawers';
 import FlashMessage from 'react-native-flash-message';
 import Splash from './Splash';
 import * as eva from '@eva-design/eva';
@@ -49,7 +49,7 @@ const Screen: React.FC = () => {
                 <Drawer.Navigator
                   drawerContent={(props) => <DrawerContent {...props} />}
                 >
-                  <Drawer.Screen name="Dashboard" component={Dashboard} />
+                  <Drawer.Screen name="Home" component={Home} />
                   <Drawer.Screen name="Settings" component={Settings} />
                 </Drawer.Navigator>
                 <FlashMessage position="bottom" />
@@ -96,7 +96,7 @@ const DrawerContent = ({ navigation }: { navigation: any }) => {
   return (
     <DrawerContentScrollView>
       <DrawerItem
-        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Dashboard'))}
+        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Home'))}
         label="Dashboard"
       />
       <DrawerItem
