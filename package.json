@@ -8,16 +8,40 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "0.1.10",
+    "@react-navigation/drawer": "^5.8.7",
+    "@react-navigation/native": "^5.7.2",
+    "@react-navigation/stack": "^5.8.0",
+    "@types/react": "^16.9.43",
+    "@types/react-native": "^0.63.2",
+    "@types/uuid": "^8.0.0",
     "expo": "~38.0.8",
     "expo-status-bar": "^1.0.2",
+    "mobx": "^5.15.4",
+    "mobx-keystone": "0.41.0",
+    "mobx-react-lite": "^2.0.7",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react-native-gesture-handler": "~1.6.0",
+    "react-native-reanimated": "~1.9.0",
+    "react-native-safe-area-context": "~3.0.7",
+    "react-native-screens": "~2.9.0",
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
-    "babel-preset-expo": "~8.1.0"
+    "babel-preset-expo": "~8.1.0",
+    "eslint": "7.2.0",
+    "eslint-config-airbnb": "18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "2.21.2",
+    "eslint-plugin-jsx-a11y": "6.3.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "7.20.0",
+    "eslint-plugin-react-hooks": "4.0.0",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.7"
   },
   "private": true
 }
